@@ -119,52 +119,189 @@
         nav a:hover {
             color: #ffd700;
         }
-        
-        .blog-posts {
-            display: grid;
-            gap: 2rem;
-        }
-        
-        .blog-post {
+
+        .filters-section {
             background: white;
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .filters-section h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .filter-tag:hover {
+            background-color: #d5dbdb;
+            border-color: #95a5a6;
+        }
+
+        .filter-tag.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+
+        .clear-filters {
+            padding: 0.5rem 1rem;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .clear-filters:hover {
+            background-color: #c0392b;
+        }
+        
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .blog-post {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            border: 1px solid #e0e0e0;
+        }
+
+        .blog-post.active {
+            display: flex;
         }
         
         .blog-post:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            border-color: #3498db;
         }
         
         .blog-post h2 {
             color: #2c3e50;
-            margin-bottom: 0.5rem;
-            font-size: 1.8rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.4rem;
+            line-height: 1.4;
         }
         
         .blog-meta {
-            color: #7f8c8d;
-            font-size: 0.9rem;
+            color: #95a5a6;
+            font-size: 0.85rem;
             margin-bottom: 1rem;
+        }
+
+        .blog-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .blog-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
         
         .blog-post p {
             color: #555;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
         
         .read-more {
             display: inline-block;
             color: #3498db;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             transition: color 0.3s;
+            align-self: flex-start;
         }
         
         .read-more:hover {
             color: #2980b9;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            padding: 0.6rem 1rem;
+            background-color: white;
+            border: 2px solid #3498db;
+            color: #3498db;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .pagination button:hover {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .pagination button.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            color: #7f8c8d;
         }
         
         footer {
@@ -186,8 +323,26 @@
                 gap: 1rem;
             }
             
+            .blog-posts {
+                grid-template-columns: 1fr;
+            }
+
             .blog-post {
-                padding: 1.5rem;
+                padding: 1.25rem;
+            }
+
+            .filter-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .pagination {
+                gap: 0.25rem;
+            }
+
+            .pagination button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -207,32 +362,294 @@
     </nav>
     
     <div class="container">
+        <section class="filters-section">
+            <h3>Filter Articles</h3>
+            <div class="filter-group">
+                <span class="filter-tag" data-filter="all" style="background-color: #3498db; color: white; border-color: #2980b9;">All</span>
+                <span class="filter-tag" data-filter="technology">Technology</span>
+                <span class="filter-tag" data-filter="development">Development</span>
+                <span class="filter-tag" data-filter="learning">Learning</span>
+                <span class="filter-tag" data-filter="tips">Tips & Tricks</span>
+                <button class="clear-filters" style="display: none;">Clear Filters</button>
+            </div>
+        </section>
+
         <section class="blog-posts">
-            <article class="blog-post">
+            <article class="blog-post active" data-tags="technology,development" data-date="2024-01-15">
                 <h2>Welcome to My Blog</h2>
                 <div class="blog-meta">Published on January 15, 2024</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Technology</span>
+                    <span class="blog-tag">Development</span>
+                </div>
                 <p>Welcome to my blog! This is the beginning of an exciting journey where I'll be sharing my thoughts, experiences, and insights on various topics. Whether you're here for technology, personal development, or just interesting stories, I hope you find something valuable.</p>
                 <a href="#" class="read-more">Read More →</a>
             </article>
             
-            <article class="blog-post">
+            <article class="blog-post active" data-tags="development,tips" data-date="2024-01-12">
                 <h2>Getting Started with Web Development</h2>
                 <div class="blog-meta">Published on January 12, 2024</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Development</span>
+                    <span class="blog-tag">Tips & Tricks</span>
+                </div>
                 <p>Web development is an exciting field with endless possibilities. In this post, I'll share some tips for beginners who are just starting their journey into web development, including essential tools, resources, and best practices to accelerate your learning.</p>
                 <a href="#" class="read-more">Read More →</a>
             </article>
             
-            <article class="blog-post">
+            <article class="blog-post active" data-tags="learning" data-date="2024-01-08">
                 <h2>The Importance of Continuous Learning</h2>
                 <div class="blog-meta">Published on January 8, 2024</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Learning</span>
+                </div>
                 <p>In today's fast-paced world, continuous learning is more important than ever. This article explores why staying curious and committed to personal growth is essential for success, and how you can build a learning habit that sticks.</p>
                 <a href="#" class="read-more">Read More →</a>
             </article>
+
+            <article class="blog-post active" data-tags="technology" data-date="2024-01-05">
+                <h2>Latest Tech Trends in 2024</h2>
+                <div class="blog-meta">Published on January 5, 2024</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Technology</span>
+                </div>
+                <p>Explore the most exciting technological advancements shaping our world in 2024. From artificial intelligence to quantum computing, discover what innovations are changing the way we work and live.</p>
+                <a href="#" class="read-more">Read More →</a>
+            </article>
+
+            <article class="blog-post active" data-tags="tips,development" data-date="2024-01-02">
+                <h2>Best Practices for Clean Code</h2>
+                <div class="blog-meta">Published on January 2, 2024</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Development</span>
+                    <span class="blog-tag">Tips & Tricks</span>
+                </div>
+                <p>Writing clean, maintainable code is essential for any developer. Learn the principles and practices that will make your code more readable, efficient, and easier to maintain throughout its lifecycle.</p>
+                <a href="#" class="read-more">Read More →</a>
+            </article>
+
+            <article class="blog-post active" data-tags="learning,technology" data-date="2023-12-28">
+                <h2>Mastering JavaScript Fundamentals</h2>
+                <div class="blog-meta">Published on December 28, 2023</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Learning</span>
+                    <span class="blog-tag">Technology</span>
+                </div>
+                <p>JavaScript is the foundation of web development. Dive deep into the core concepts and fundamentals that every developer should master to build robust and scalable applications.</p>
+                <a href="#" class="read-more">Read More →</a>
+            </article>
+
+            <article class="blog-post" data-tags="development" data-date="2023-12-24">
+                <h2>React Hooks: A Complete Guide</h2>
+                <div class="blog-meta">Published on December 24, 2023</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Development</span>
+                </div>
+                <p>React Hooks have revolutionized the way we write React components. Learn how to use useState, useEffect, and custom hooks to build more efficient and reusable components in your applications.</p>
+                <a href="#" class="read-more">Read More →</a>
+            </article>
+
+            <article class="blog-post" data-tags="technology,tips" data-date="2023-12-20">
+                <h2>Cybersecurity Best Practices for 2024</h2>
+                <div class="blog-meta">Published on December 20, 2023</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Technology</span>
+                    <span class="blog-tag">Tips & Tricks</span>
+                </div>
+                <p>As cyber threats continue to evolve, it's crucial to stay informed about the latest security practices. This guide covers essential cybersecurity measures to protect your digital assets and personal information.</p>
+                <a href="#" class="read-more">Read More →</a>
+            </article>
+
+            <article class="blog-post" data-tags="learning" data-date="2023-12-18">
+                <h2>How to Build a Personal Brand</h2>
+                <div class="blog-meta">Published on December 18, 2023</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Learning</span>
+                </div>
+                <p>Building a strong personal brand is essential in today's digital world. Discover strategies to establish your online presence, showcase your expertise, and connect with your audience authentically.</p>
+                <a href="#" class="read-more">Read More →</a>
+            </article>
+
+            <article class="blog-post" data-tags="development,learning" data-date="2023-12-15">
+                <h2>CSS Grid vs Flexbox: When to Use Each</h2>
+                <div class="blog-meta">Published on December 15, 2023</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Development</span>
+                    <span class="blog-tag">Learning</span>
+                </div>
+                <p>CSS Grid and Flexbox are powerful layout tools, but knowing when to use each one can significantly improve your workflow. Explore the differences and best use cases for both layout methods.</p>
+                <a href="#" class="read-more">Read More →</a>
+            </article>
+
+            <article class="blog-post" data-tags="technology" data-date="2023-12-12">
+                <h2>The Future of Artificial Intelligence</h2>
+                <div class="blog-meta">Published on December 12, 2023</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Technology</span>
+                </div>
+                <p>Artificial Intelligence is reshaping industries at an unprecedented pace. Explore the future possibilities, potential challenges, and how AI will continue to transform our society in the coming years.</p>
+                <a href="#" class="read-more">Read More →</a>
+            </article>
+
+            <article class="blog-post" data-tags="tips,development" data-date="2023-12-10">
+                <h2>Debugging Techniques Every Developer Should Know</h2>
+                <div class="blog-meta">Published on December 10, 2023</div>
+                <div class="blog-tags">
+                    <span class="blog-tag">Development</span>
+                    <span class="blog-tag">Tips & Tricks</span>
+                </div>
+                <p>Debugging is an art form that separates good developers from great ones. Learn advanced debugging techniques and tools that will help you identify and fix issues faster than ever before.</p>
+                <a href="#" class="read-more">Read More →</a>
+            </article>
         </section>
+
+        <div class="no-results" style="display: none;">
+            <p>No articles found matching your filters. Try adjusting your selection.</p>
+        </div>
+
+        <div class="pagination"></div>
     </div>
     
     <footer>
         <p>&copy; 2024 My Blog. All rights reserved.</p>
     </footer>
+
+    <script>
+        const POSTS_PER_PAGE = 6;
+        let currentPage = 1;
+        let activeFilter = 'all';
+        let filteredPosts = [];
+
+        const filterTags = document.querySelectorAll('.filter-tag');
+        const clearButton = document.querySelector('.clear-filters');
+        const blogPosts = document.querySelectorAll('.blog-post');
+        const noResults = document.querySelector('.no-results');
+        const paginationContainer = document.querySelector('.pagination');
+
+        function getFilteredPosts() {
+            if (activeFilter === 'all') {
+                return Array.from(blogPosts).sort((a, b) => {
+                    return new Date(b.dataset.date) - new Date(a.dataset.date);
+                });
+            }
+
+            return Array.from(blogPosts)
+                .filter(post => {
+                    const tags = post.dataset.tags.split(',');
+                    return tags.includes(activeFilter);
+                })
+                .sort((a, b) => {
+                    return new Date(b.dataset.date) - new Date(a.dataset.date);
+                });
+        }
+
+        function renderPosts() {
+            filteredPosts = getFilteredPosts();
+            const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+
+            if (currentPage > totalPages && totalPages > 0) {
+                currentPage = totalPages;
+            }
+
+            blogPosts.forEach(post => {
+                post.classList.remove('active');
+            });
+
+            if (filteredPosts.length === 0) {
+                noResults.style.display = 'block';
+                paginationContainer.innerHTML = '';
+                return;
+            }
+
+            noResults.style.display = 'none';
+
+            const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+            const endIndex = startIndex + POSTS_PER_PAGE;
+            const postsToShow = filteredPosts.slice(startIndex, endIndex);
+
+            postsToShow.forEach(post => {
+                post.classList.add('active');
+            });
+
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            paginationContainer.innerHTML = '';
+
+            if (totalPages <= 1) {
+                return;
+            }
+
+            const prevButton = document.createElement('button');
+            prevButton.textContent = '← Previous';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderPosts();
+                }
+            });
+            paginationContainer.appendChild(prevButton);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.classList.toggle('active', i === currentPage);
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    renderPosts();
+                });
+                paginationContainer.appendChild(pageButton);
+            }
+
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Next →';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderPosts();
+                }
+            });
+            paginationContainer.appendChild(nextButton);
+        }
+
+        filterTags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                const filter = tag.dataset.filter;
+                
+                filterTags.forEach(t => t.classList.remove('active'));
+                tag.classList.add('active');
+
+                activeFilter = filter;
+                currentPage = 1;
+
+                if (filter === 'all') {
+                    clearButton.style.display = 'none';
+                } else {
+                    clearButton.style.display = 'inline-block';
+                }
+
+                renderPosts();
+            });
+        });
+
+        clearButton.addEventListener('click', () => {
+            filterTags.forEach(tag => {
+                if (tag.dataset.filter === 'all') {
+                    tag.classList.add('active');
+                } else {
+                    tag.classList.remove('active');
+                }
+            });
+            activeFilter = 'all';
+            currentPage = 1;
+            clearButton.style.display = 'none';
+            renderPosts();
+        });
+
+        renderPosts();
+    </script>
 </body>
 </html>
